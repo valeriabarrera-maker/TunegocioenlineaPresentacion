@@ -125,6 +125,15 @@ h1,h2{line-height:1.02;letter-spacing:-.02em;font-weight:800}
 .cover .eyebrow{display:inline-flex;align-items:center;gap:11px;margin-bottom:14px;
   font-size:clamp(11px,1.05vw,14px);font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--green)}
 .cover .eyebrow::before{content:"";width:34px;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--lime),var(--green))}
+.hero-badge{display:inline-flex;align-items:center;gap:10px;margin:0 0 clamp(14px,1.8vw,22px);
+  font-size:clamp(13px,1.35vw,19px);font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--green);background:rgba(67,176,0,.12);border:1px solid rgba(67,176,0,.28);
+  padding:clamp(9px,1vw,13px) clamp(16px,1.8vw,26px);border-radius:100px;
+  box-shadow:0 8px 20px rgba(67,176,0,.12);
+  animation:badgePulse 2.8s ease-in-out infinite}
+.hero-badge-dot{width:9px;height:9px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 4px rgba(67,176,0,.22)}
+@keyframes badgePulse{0%,100%{box-shadow:0 8px 20px rgba(67,176,0,.12)}
+  50%{box-shadow:0 10px 26px rgba(67,176,0,.22)}}
 .cover h1{font-size:clamp(38px,5.6vw,80px);color:var(--teal);font-weight:800;max-width:12ch;line-height:.98}
 .cover .lead{font-size:clamp(16px,2vw,27px);font-weight:600;color:var(--green);margin-top:14px}
 /* flat informational meta chips (NOT buttons) */
@@ -310,19 +319,39 @@ h1,h2{line-height:1.02;letter-spacing:-.02em;font-weight:800}
 .v3 .statval,.v5 .statval,.v6 .statval{font-size:clamp(18px,2vw,28px)}
 .v5 .slide-title,.v6 .slide-title{margin-bottom:clamp(22px,2.8vw,38px)}
 
-/* page 3 — two auto-scrolling rows (marquee), opposite directions, pause on hover */
-.v3 .marquee-wrap{display:flex;flex-direction:column;gap:clamp(3px,0.5vw,7px)}
-.v3 .marquee{overflow:hidden;padding:6px 0 32px;
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
-.v3 .slide-title{margin-bottom:clamp(12px,1.6vw,22px)}
-.v3 .track{display:flex;gap:clamp(10px,1.1vw,15px);width:max-content;will-change:transform}
-.v3 .r1 .track{animation:marqRight 64s linear infinite}
-.v3 .r2 .track{animation:marqLeft 64s linear infinite}
-.v3 .marquee:hover .track{animation-play-state:paused}
-/* exact same width as page 4's 4-column grid cell */
-.v3 .bullet{width:calc((100vw - 2*clamp(34px,5.2vw,78px) - 3*clamp(10px,1.1vw,15px))/4);flex-shrink:0}
-@keyframes marqLeft{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-@keyframes marqRight{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+/* page 3 — coverflow carousel: big center card, smaller peeking cards on each side */
+.v3 .slide-title{margin-bottom:clamp(8px,1.1vw,14px)}
+.v3 .ctabs{display:flex;justify-content:center;gap:clamp(6px,0.7vw,10px);
+  background:rgba(3,127,3,.07);border:1px solid rgba(3,127,3,.14);border-radius:100px;
+  padding:5px;width:fit-content;margin:clamp(20px,5vh,60px) auto 0}
+.v3 .carousel{flex:0 0 auto;margin-top:clamp(10px,2.5vh,28px)}
+.v3 .ctab{border:none;background:transparent;cursor:pointer;color:#3d5c61;font-weight:700;
+  font-size:clamp(12px,1.15vw,15px);letter-spacing:.02em;padding:clamp(7px,0.9vw,11px) clamp(16px,1.8vw,26px);
+  border-radius:100px;transition:background .3s,color .3s,box-shadow .3s}
+.v3 .ctab:hover{color:var(--green)}
+.v3 .ctab.on{background:var(--green);color:#fff;box-shadow:0 8px 18px -8px rgba(3,127,3,.6)}
+.v3 .carousel{position:relative;flex:0 0 auto;display:flex;align-items:center;justify-content:center}
+.v3 .carousel-track{position:relative;width:100%;height:clamp(210px,36vh,300px);perspective:1400px}
+.v3 .cslide{position:absolute;top:50%;left:50%;width:clamp(300px,34vw,470px);
+  transform:translate(-50%,-50%);transition:transform .55s cubic-bezier(.25,.85,.3,1),opacity .55s;
+  will-change:transform,opacity}
+.v3 .cslide .bullet{width:100%;min-height:clamp(200px,29vh,270px);justify-content:center;
+  gap:clamp(9px,1.1vw,15px);padding:clamp(24px,2.8vw,36px)}
+.v3 .cslide .ic{width:46px;height:46px}
+.v3 .cslide .ic svg{width:23px;height:23px}
+.v3 .cslide.is-center .bullet{box-shadow:0 30px 60px -26px rgba(3,127,3,.4);border-color:rgba(3,127,3,.2)}
+.v3 .cslide.is-center .statval{font-size:clamp(30px,3.4vw,46px)}
+.v3 .cslide.is-center .capt{font-size:clamp(13px,1.25vw,16.5px)}
+.v3 .cslide.is-side{cursor:pointer}
+/* nav arrows */
+.v3 .cnav{position:absolute;top:50%;transform:translateY(-50%);z-index:40;width:clamp(42px,3.4vw,52px);height:clamp(42px,3.4vw,52px);
+  border-radius:50%;border:1px solid rgba(3,127,3,.2);background:#fff;color:var(--green);
+  display:grid;place-items:center;cursor:pointer;box-shadow:0 10px 26px -12px rgba(3,127,3,.4);
+  transition:transform .25s,background .25s,color .25s}
+.v3 .cnav:hover{background:var(--green);color:#fff;transform:translateY(-50%) scale(1.08)}
+.v3 .cprev{left:clamp(0px,1vw,14px)}
+.v3 .cnext{right:clamp(0px,1vw,14px)}
+.v3 .cnav:disabled{opacity:.3;cursor:default;pointer-events:none;box-shadow:none}
 
 /* subtle green ambiance for the results page (background only) */
 .v5{background:
@@ -429,10 +458,10 @@ h1,h2{line-height:1.02;letter-spacing:-.02em;font-weight:800}
 
   <!-- 1 · COVER -->
   <section class="slide bg-hero cover active">
-    <span class="tag">Skin in the game</span>
     <div class="cover-grid">
       <div class="cover-left">
         <img class="cover-logo" src="assets/logo%20tu%20negocio.svg" alt="Tu Negocio en Línea">
+        <span class="hero-badge"><span class="hero-badge-dot"></span>Skin in the game</span>
         <h1>Lecciones Aprendidas</h1>
         <div class="lead">Proyecto Canguro · 015</div>
         <div class="meta-row">
@@ -498,9 +527,35 @@ h1,h2{line-height:1.02;letter-spacing:-.02em;font-weight:800}
     </div>
     <div class="body">
       <h2 class="slide-title">Qué hicimos distinto</h2>
-      <div class="marquee-wrap">
-        <div class="marquee r1"><div class="track"><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4M16 2v4M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M9 16l2 2 4-4"/></svg></div><div class="statval">5 meses</div><div class="capt">proyecto planeado y concertado con todas las cabezas del proyecto.</div></div><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M9 8V6a3 3 0 0 1 6 0v2M9 14h6"/></svg></div><div class="statval">90%</div><div class="capt">del personal del proyecto fue <b>CPS / remoto</b>.</div></div><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><path d="M2 21a7 7 0 0 1 14 0"/><path d="M16 3.1a3 3 0 0 1 0 5.8M22 21a7 7 0 0 0-5-6.7"/></svg></div><div class="statval">Desde 2020</div><div class="capt">operando el proyecto con el mismo <b>equipo base</b>.</div></div><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div><div class="statval">Inhouse</div><div class="capt">búsqueda de personal realizada internamente.</div></div><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg></div><div class="statval">4 dev + 2 QA</div><div class="capt">metodología ágil: despliegues diarios y entregas incrementales desde la semana 4.</div></div><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/><path d="M22 2l-5 5"/></svg></div><div class="statval">20 días</div><div class="capt">de horizonte en el seguimiento de las actividades.</div></div></div></div>
-        <div class="marquee r2"><div class="track"><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a10 10 0 0 1 20 0"/><circle cx="12" cy="8" r="4"/><circle cx="12" cy="8" r="1.2" fill="currentColor"/></svg></div><div class="statval">5 personas</div><div class="capt">seguimiento directo del gerente, sobre <b>140</b> en el proyecto.</div></div><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 6.9H22l-6 4.4 2.3 7-6.3-4.6-6.3 4.6 2.3-7-6-4.4h7.6z"/></svg></div><div class="statval">5–7 salarios</div><div class="capt">de incentivo, conocido por el equipo desde el momento cero.</div></div><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg></div><div class="statval">Sin extras</div><div class="capt">horas extra no pagadas sin resultados aprobados por el ministerio.</div></div><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8h10M7 12h10M7 16h6"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div><div class="statval">Mockups</div><div class="capt">ninguna línea de código sin su aprobación previa.</div></div><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><div class="statval">8 días</div><div class="capt">máximo para pagos a proveedores y contratistas.</div></div><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg></div><div class="statval">A terceros</div><div class="capt">sobrecostos transferidos a tutores, equipo base y marketing.</div></div></div></div>
+      <div class="ctabs">
+        <button class="ctab on" data-tab="personas">Personas</button>
+        <button class="ctab" data-tab="procesos">Procesos</button>
+        <button class="ctab" data-tab="herramientas">Herramientas</button>
+      </div>
+      <div class="carousel">
+        <button class="cnav cprev" aria-label="Anterior"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <div class="carousel-track">
+          <!-- PERSONAS -->
+          <div class="cslide" data-tab="personas"><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M9 8V6a3 3 0 0 1 6 0v2M9 14h6"/></svg></div><div class="statval">90%</div><div class="capt">del personal del proyecto fue <b>CPS / remoto</b>.</div></div></div>
+          <div class="cslide" data-tab="personas"><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><path d="M2 21a7 7 0 0 1 14 0"/><path d="M16 3.1a3 3 0 0 1 0 5.8M22 21a7 7 0 0 0-5-6.7"/></svg></div><div class="statval">Desde 2020</div><div class="capt">mantener el <b>equipo base</b> que opera el proyecto.</div></div></div>
+          <div class="cslide" data-tab="personas"><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a10 10 0 0 1 20 0"/><circle cx="12" cy="8" r="4"/></svg></div><div class="statval">5 personas</div><div class="capt">seguimiento directo del gerente <span class="hl">(total proyecto: <b>140</b>).</span></div></div></div>
+          <div class="cslide" data-tab="personas"><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 6.9H22l-6 4.4 2.3 7-6.3-4.6-6.3 4.6 2.3-7-6-4.4h7.6z"/></svg></div><div class="statval">5–7 salarios</div><div class="capt">de incentivo, conocido por el equipo <b>desde el momento cero</b>.</div></div></div>
+          <div class="cslide" data-tab="personas"><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg></div><div class="statval">Sin extras</div><div class="capt">horas extra no pagadas sin resultados <b>aprobados por el ministerio</b>.</div></div></div>
+          <!-- PROCESOS -->
+          <div class="cslide" data-tab="procesos"><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4M16 2v4M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M9 16l2 2 4-4"/></svg></div><div class="statval">5 meses</div><div class="capt">proyecto planeado y concertado con <b>todas las cabezas</b> del proyecto.</div></div></div>
+          <div class="cslide" data-tab="procesos"><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div><div class="statval">Inhouse</div><div class="capt">procesos de <b>búsqueda de personal</b> realizados internamente.</div></div></div>
+          <div class="cslide" data-tab="procesos"><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg></div><div class="statval">4 dev + 2 QA</div><div class="capt">metodología <b>realmente ágil</b>: despliegues diarios, entregas incrementales desde la semana 4.</div></div></div>
+          <div class="cslide" data-tab="procesos"><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/><path d="M22 2l-5 5"/></svg></div><div class="statval">20 días</div><div class="capt">seguimiento a las actividades de los <b>próximos 20 días</b>.</div></div></div>
+          <div class="cslide" data-tab="procesos"><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8h10M7 12h10M7 16h6"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div><div class="statval">Mockups</div><div class="capt">ninguna línea de código sin la <b>aprobación de los mockups</b>.</div></div></div>
+          <div class="cslide" data-tab="procesos"><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><div class="statval">8 días</div><div class="capt">máximo para pagos a <b>proveedores y contratistas</b>.</div></div></div>
+          <div class="cslide" data-tab="procesos"><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg></div><div class="statval">A terceros</div><div class="capt">sobrecostos transferidos a <b>tutores, equipo base y marketing</b>.</div></div></div>
+          <!-- HERRAMIENTAS -->
+          <div class="cslide" data-tab="herramientas"><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18"/></svg></div><div class="statval">Trello</div><div class="capt">tablero <b>To-Do</b> para la gestión de tareas.</div></div></div>
+          <div class="cslide" data-tab="herramientas"><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg></div><div class="statval">IA</div><div class="capt">aplicada en <b>todas las fases</b> del proceso.</div></div></div>
+          <div class="cslide" data-tab="herramientas"><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></svg></div><div class="statval">Dashboard</div><div class="capt">seguimiento de todo el <b>embudo del beneficiario</b>.</div></div></div>
+          <div class="cslide" data-tab="herramientas"><div class="bullet"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="9" height="3" rx="1"/><rect x="7" y="10" width="11" height="3" rx="1"/><rect x="5" y="16" width="8" height="3" rx="1"/></svg></div><div class="statval">Gantt</div><div class="capt">plan de trabajo por <b>fases e hitos</b>.</div></div></div>
+        </div>
+        <button class="cnav cnext" aria-label="Siguiente"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
       </div>
     </div>
     <div class="pageno">03</div>
@@ -615,15 +670,48 @@ slides.forEach((s,idx)=>{
     });
   }
   if(!FX) return;
-  const targets=[...s.querySelectorAll('.slide-title,.slide-sub,.card,.bullet,.metric,.imp,.pair,.cover .eyebrow,.cover h1,.cover .lead,.cover .meta-row')].filter(el=>!el.closest('.marquee'));
+  const targets=[...s.querySelectorAll('.slide-title,.slide-sub,.card,.bullet,.metric,.imp,.pair,.cover .eyebrow,.hero-badge,.cover h1,.cover .lead,.cover .meta-row')].filter(el=>!el.closest('.carousel'));
   targets.forEach((el,k)=>{
     el.classList.add('rv');
     el.style.animationDelay=(0.05+k*0.055)+'s';
   });
 });
 
-/* marquee: duplicate each row's cards for a seamless infinite loop */
-document.querySelectorAll('.marquee .track').forEach(t=>{t.innerHTML+=t.innerHTML});
+/* page 3 coverflow carousel */
+(function(){
+  const car=document.querySelector('.v3 .carousel');if(!car)return;
+  const allCards=[...car.querySelectorAll('.cslide')];
+  const tabs=[...document.querySelectorAll('.v3 .ctab')];
+  const prev=car.querySelector('.cprev'),next=car.querySelector('.cnext');
+  let ci=0,cards=[];
+  function setTab(name){
+    tabs.forEach(t=>t.classList.toggle('on',t.dataset.tab===name));
+    cards=allCards.filter(c=>c.dataset.tab===name);
+    allCards.forEach(c=>{if(c.dataset.tab!==name){c.style.opacity=0;c.style.pointerEvents='none';c.style.zIndex=0}});
+    ci=0;render();
+  }
+  function set(n){ci=Math.max(0,Math.min(cards.length-1,n));render()}
+  function render(){
+    cards.forEach((c,k)=>{
+      const o=k-ci,abs=Math.abs(o);
+      let tx=o*82,scale=1,op=1,z=30;
+      if(abs===1){scale=.72;op=.6;z=20;tx=o*80}
+      else if(abs>=2){scale=.55;op=0;z=5;tx=o*88}
+      c.style.transform=`translate(-50%,-50%) translateX(${tx}%) scale(${scale})`;
+      c.style.opacity=op;c.style.zIndex=z;
+      c.style.pointerEvents=abs<=1?'auto':'none';
+      c.classList.toggle('is-center',abs===0);
+      c.classList.toggle('is-side',abs===1);
+      c.onclick=abs===1?()=>set(k):null;
+    });
+    prev.disabled=ci===0;
+    next.disabled=ci===cards.length-1;
+  }
+  prev.onclick=()=>set(ci-1);
+  next.onclick=()=>set(ci+1);
+  tabs.forEach(t=>t.onclick=()=>setTab(t.dataset.tab));
+  setTab('personas');
+})();
 
 slides.forEach((_,n)=>{const d=document.createElement('div');d.className='d'+(n===0?' on':'');d.onclick=()=>go(n);dotsWrap.appendChild(d)});
 const dots=[...document.querySelectorAll('.d')];
